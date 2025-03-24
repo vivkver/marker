@@ -84,6 +84,10 @@ class CommonParams(BaseModel):
         bool,
         Field(description="Whether to use the LLM model for higher quality processing. Defaults to False.")
     ] = False
+    strip_existing_ocr: Annotated[
+        bool,
+        Field(description="Whether to strip existing OCR text from the PDF. Defaults to False.")
+    ] = False
 
 
 async def _convert_pdf(params: CommonParams):
@@ -142,6 +146,7 @@ async def convert_pdf_upload(
     paginate_output: Optional[bool] = Form(default=False),
     output_format: Optional[str] = Form(default="markdown"),
     use_llm: Optional[bool] = Form(default=False),
+    strip_existing_ocr: Optional[bool] = Form(default=False),
     file: UploadFile = File(
         ..., description="The PDF file to convert.", media_type="application/pdf"
     ),
@@ -159,6 +164,7 @@ async def convert_pdf_upload(
         paginate_output=paginate_output,
         output_format=output_format,
         use_llm=use_llm,
+        strip_existing_ocr=strip_existing_ocr,
     )
     results = await _convert_pdf(params)
     os.remove(upload_path)
