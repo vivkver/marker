@@ -9,7 +9,7 @@ COPY . /app
 
 # Install dependencies
 RUN pip install --no-cache-dir poetry && \
-    poetry install --no-dev --no-interaction --no-ansi
+    poetry install --no-interaction --no-ansi
 
 # Expose the port the app runs on
 EXPOSE 8000
